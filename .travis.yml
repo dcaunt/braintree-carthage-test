@@ -4,4 +4,8 @@ before_install:
 - curl -L -O https://github.com/Carthage/Carthage/releases/download/0.15/Carthage.pkg
 - sudo installer -pkg Carthage.pkg -target /
 install: true
-script: carthage bootstrap --platform iOS
+script:
+- time /usr/bin/xcrun xcodebuild -workspace Carthage/Checkouts/braintree_ios/Braintree.xcworkspace -list
+- time /usr/bin/xcrun xcodebuild -workspace Carthage/Checkouts/braintree_ios/Braintree.xcworkspace -scheme BraintreeCore -configuration Release -sdk iphoneos ONLY_ACTIVE_ARCH=NO BITCODE_GENERATION_MODE=bitcode CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= CARTHAGE=YES clean build
+- time /usr/bin/xcrun xcodebuild -workspace Carthage/Checkouts/braintree_ios/Braintree.xcworkspace -scheme BraintreeDataCollector -configuration Release -sdk iphoneos ONLY_ACTIVE_ARCH=NO BITCODE_GENERATION_MODE=bitcode CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= CARTHAGE=YES -showBuildSettings
+- carthage bootstrap --platform iOS --no-use-binaries --verbose
